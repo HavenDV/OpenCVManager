@@ -1,0 +1,2 @@
+# OpenCVManager
+OpenCV libraries manager
