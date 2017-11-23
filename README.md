@@ -1,2 +1,2 @@
 # OpenCVManager
-OpenCV libraries manager
+OpenCV libraries manager for Visual Studio 2017
