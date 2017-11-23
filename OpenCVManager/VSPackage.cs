@@ -26,6 +26,7 @@ namespace OpenCVManager
     [Guid(PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", 
         "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class VsPackage : Package
     {
         /// <summary>
@@ -53,6 +54,7 @@ namespace OpenCVManager
         protected override void Initialize()
         {
             base.Initialize();
+            OptionsCommand.Initialize(this);
         }
 
         #endregion
