@@ -9,7 +9,7 @@ namespace OpenCVManager.Utilities
 {
     public static class LibraryUtilities
     {
-        public static List<string> GetVcProjectLibs(Project project, string startsWith = null, string endsWith = null, bool withoutExtension = true)
+        public static List<string> GetVcProjectLibraries(Project project, string startsWith = null, string endsWith = null, bool withoutExtension = true)
         {
             var libs = new List<string>();
 
@@ -46,7 +46,7 @@ namespace OpenCVManager.Utilities
             return libs;
         }
 
-        public static List<string> GetAvailableLibs(string installPath, string pattern = "*.lib")
+        public static List<string> GetAvailableLibraries(string installPath, string pattern = "*.lib")
         {
             var libPath = installPath + @"\lib\";
             var libs = Directory.EnumerateFiles(libPath, pattern).ToList();
