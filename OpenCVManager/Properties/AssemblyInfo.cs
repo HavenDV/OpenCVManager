@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OpenCVManager")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("havendv")]
 [assembly: AssemblyProduct("OpenCVManager")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

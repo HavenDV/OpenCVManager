@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
 using OpenCVManager.Extensions;
+using OpenCVManager.Properties;
 using OpenCVManager.Utilities;
 
 namespace OpenCVManager.Forms
@@ -53,15 +54,24 @@ namespace OpenCVManager.Forms
 
             var libraryPath = @"D:\Libraries\opencv\3.3.0";
             AvailableLibs = LibraryUtilities.GetAvailableLibraries(Path.Combine(libraryPath, "install", "x64", "vc15")).
-                Select(lib => GetName(lib, "331")).ToList();
+                Select(GetName).ToList();
             ProjectLibs = GetOpenCvProjectLibraries(Project);
+
+            var availableVersions = Settings.Default.AvailableVersions?.Split(';').Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+            foreach (var availableVersion in availableVersions)
+            {
+                if (!usedVersionComboBox.Items.Contains(availableVersion))
+                {
+                    usedVersionComboBox.Items.Add(availableVersion);
+                }
+            }
 
             libsListBox.Items.Clear();
             foreach (var lib in AvailableLibs)
             {
-                libsListBox.Items.Add(lib, ProjectLibs.Contains(lib, StringComparer.InvariantCultureIgnoreCase));
+                libsListBox.Items.Add(lib, ProjectLibs.Contains(lib, StringComparer.OrdinalIgnoreCase));
             }
-            foreach (var lib in ProjectLibs.Except(AvailableLibs, StringComparer.InvariantCultureIgnoreCase))
+            foreach (var lib in ProjectLibs.Except(AvailableLibs, StringComparer.OrdinalIgnoreCase))
             {
                 libsListBox.Items.Add(lib, CheckState.Indeterminate);
             }
@@ -90,6 +100,11 @@ namespace OpenCVManager.Forms
         private void Save(object sender, EventArgs e)
         {
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
+
+            var availableVersions = usedVersionComboBox.Items.Cast<string>()
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+            Settings.Default.AvailableVersions = string.Join(";", availableVersions);
+            Settings.Default.Save();
 
             Close();
         }
@@ -134,8 +149,8 @@ namespace OpenCVManager.Forms
 
         #region Static methods
 
-        public static string GetName(string path, string version) =>
-            Path.GetFileNameWithoutExtension(path)?.Replace("opencv_", "").Replace(version, "");
+        public static string GetName(string path) =>
+            Path.GetFileNameWithoutExtension(path)?.Replace("opencv_", "").Replace(GetVersion(path), "");
 
         public static string GetVersion(string libPath)
         {
@@ -161,17 +176,10 @@ namespace OpenCVManager.Forms
             return name.Substring(index + 1);
         }
 
-        public static List<string> GetOpenCvProjectLibraries(Project project)
-        {
-            var libs = LibraryUtilities.GetVcProjectLibraries(project, "opencv_");
-            if (libs.Count == 0)
-            {
-                return libs;
-            }
-
-            var version = GetVersion(libs[0]);
-            return libs.Select(lib => GetName(lib, version)).ToList();
-        }
+        public static List<string> GetOpenCvProjectLibraries(Project project) => LibraryUtilities.
+            GetVcProjectLibraries(project, "opencv_").
+            Select(GetName).
+            ToList();
 
         #endregion
     }
