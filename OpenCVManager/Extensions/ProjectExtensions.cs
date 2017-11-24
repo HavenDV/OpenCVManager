@@ -6,17 +6,21 @@ namespace OpenCVManager.Extensions
     {
         public static void WrireGlobalVariable(this Project project, string name, object value)
         {
-            project.Globals.VariablePersists[name] = true;
-            project.Globals[name] = value;
+            var isEmpty = value == null || value is string stringValue && string.IsNullOrWhiteSpace(stringValue);
+
+            project.Globals.VariablePersists[name] = !isEmpty;
+            project.Globals[name] = isEmpty ? null : value;
         }
 
-        public static bool GetGlobalVariable<T>(this Project project, string name, out T value)
+        public static T GetGlobalVariable<T>(this Project project, string name) => (T)project.Globals[name];
+
+        public static bool TryGetGlobalVariable<T>(this Project project, string name, out T value)
         {
             var isExists = project.Globals.VariableExists[name];
-            value = isExists ? (T)project.Globals[name] : default(T);
+            value = isExists ? project.GetGlobalVariable<T>(name) : default(T);
 
             return isExists;
         }
-            
+
     }
 }

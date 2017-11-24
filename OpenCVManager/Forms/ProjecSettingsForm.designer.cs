@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.Label label;
             this.OptionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.libsPage = new System.Windows.Forms.TabPage();
@@ -35,19 +36,32 @@
             this.settingsPage = new System.Windows.Forms.TabPage();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.usedVersionComboBox = new System.Windows.Forms.ComboBox();
+            this.manageButton = new System.Windows.Forms.Button();
+            label = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.libsPage.SuspendLayout();
             this.settingsPage.SuspendLayout();
             this.SuspendLayout();
             // 
+            // label
+            // 
+            label.AutoSize = true;
+            label.Location = new System.Drawing.Point(19, 368);
+            label.Name = "label";
+            label.Size = new System.Drawing.Size(72, 13);
+            label.TabIndex = 13;
+            label.Text = "Used version:";
+            // 
             // OptionsPropertyGrid
             // 
+            this.OptionsPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OptionsPropertyGrid.HelpVisible = false;
             this.OptionsPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.OptionsPropertyGrid.Location = new System.Drawing.Point(6, 6);
+            this.OptionsPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.OptionsPropertyGrid.Name = "OptionsPropertyGrid";
             this.OptionsPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.OptionsPropertyGrid.Size = new System.Drawing.Size(443, 213);
+            this.OptionsPropertyGrid.Size = new System.Drawing.Size(449, 312);
             this.OptionsPropertyGrid.TabIndex = 8;
             this.OptionsPropertyGrid.ToolbarVisible = false;
             // 
@@ -74,13 +88,13 @@
             // libsListBox
             // 
             this.libsListBox.CheckOnClick = true;
-            this.libsListBox.Enabled = false;
+            this.libsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.libsListBox.FormattingEnabled = true;
             this.libsListBox.IntegralHeight = false;
-            this.libsListBox.Location = new System.Drawing.Point(6, 6);
+            this.libsListBox.Location = new System.Drawing.Point(3, 3);
             this.libsListBox.MultiColumn = true;
             this.libsListBox.Name = "libsListBox";
-            this.libsListBox.Size = new System.Drawing.Size(443, 306);
+            this.libsListBox.Size = new System.Drawing.Size(449, 312);
             this.libsListBox.TabIndex = 0;
             // 
             // settingsPage
@@ -98,7 +112,7 @@
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Location = new System.Drawing.Point(226, 396);
+            this.saveButton.Location = new System.Drawing.Point(236, 406);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(118, 30);
             this.saveButton.TabIndex = 11;
@@ -109,22 +123,45 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(354, 396);
+            this.cancelButton.Location = new System.Drawing.Point(360, 406);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(115, 30);
             this.cancelButton.TabIndex = 12;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
+            // usedVersionComboBox
+            // 
+            this.usedVersionComboBox.FormattingEnabled = true;
+            this.usedVersionComboBox.Items.AddRange(new object[] {
+            "",
+            "$(Default)"});
+            this.usedVersionComboBox.Location = new System.Drawing.Point(97, 365);
+            this.usedVersionComboBox.Name = "usedVersionComboBox";
+            this.usedVersionComboBox.Size = new System.Drawing.Size(257, 21);
+            this.usedVersionComboBox.TabIndex = 14;
+            // 
+            // manageButton
+            // 
+            this.manageButton.Location = new System.Drawing.Point(360, 359);
+            this.manageButton.Name = "manageButton";
+            this.manageButton.Size = new System.Drawing.Size(115, 30);
+            this.manageButton.TabIndex = 15;
+            this.manageButton.Text = "Manage";
+            this.manageButton.UseVisualStyleBackColor = true;
+            // 
             // ProjectSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 438);
+            this.ClientSize = new System.Drawing.Size(481, 448);
+            this.Controls.Add(this.manageButton);
+            this.Controls.Add(this.usedVersionComboBox);
+            this.Controls.Add(label);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.tabControl);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ProjectSettingsForm";
@@ -136,6 +173,7 @@
             this.libsPage.ResumeLayout(false);
             this.settingsPage.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -148,5 +186,7 @@
         private System.Windows.Forms.CheckedListBox libsListBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.ComboBox usedVersionComboBox;
+        private System.Windows.Forms.Button manageButton;
     }
 }

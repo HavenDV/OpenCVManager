@@ -9,7 +9,7 @@ namespace OpenCVManager.Utilities
 {
     public static class LibraryUtilities
     {
-        public static List<string> GetVcProjectLibs(Project project)
+        public static List<string> GetVcProjectLibs(Project project, string startsWith = null, string endsWith = null, bool withoutExtension = true)
         {
             var libs = new List<string>();
 
@@ -28,6 +28,19 @@ namespace OpenCVManager.Utilities
                     var additionalDeps = linkerWrapper.AdditionalDependencies;
                     libs.AddRange(additionalDeps);
                 }
+            }
+
+            if (withoutExtension)
+            {
+                libs = libs.Select(Path.GetFileNameWithoutExtension).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(startsWith))
+            {
+                libs = libs.Where(lib => lib.StartsWith(startsWith)).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(endsWith))
+            {
+                libs = libs.Where(lib => lib.EndsWith(endsWith)).ToList();
             }
 
             return libs;

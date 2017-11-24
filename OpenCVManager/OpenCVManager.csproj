@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\OptionsCommand.cs" />
+    <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Forms\ProjecSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
