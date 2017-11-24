@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using System.Globalization;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+using OpenCVManager.Forms;
+using OpenCVManager.Utilities;
 
 namespace OpenCVManager.Commands
 {
@@ -77,17 +77,17 @@ namespace OpenCVManager.Commands
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            var message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", GetType().FullName);
-            var title = "OptionsCommand";
+            //var message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", GetType().FullName);
+            //var title = "OptionsCommand";
 
             // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            //VsShellUtilities.ShowMessageBox(ServiceProvider, message, title,
+            //   OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+            using (var form = new ProjectSettingsForm(SolutionUtilities.GetSelectedProject(), @"D:\Libraries\opencv\3.3.0"))
+            {
+                form.ShowDialog();
+            }
         }
     }
 }
