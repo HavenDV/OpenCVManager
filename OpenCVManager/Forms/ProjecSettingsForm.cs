@@ -145,7 +145,14 @@ namespace OpenCVManager.Forms
                         MessageBox.Show(@"Current library is unavailable for the selected version");
                     }
                     break;
+            }
+        }
 
+        private void Manage(object sender, EventArgs e)
+        {
+            using (var form = new LibraryManagerForm())
+            {
+                form.ShowDialog();
             }
         }
 

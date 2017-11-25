@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectSettingsForm));
             this.OptionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.libsPage = new System.Windows.Forms.TabPage();
@@ -149,6 +150,7 @@
             this.manageButton.TabIndex = 15;
             this.manageButton.Text = "Manage";
             this.manageButton.UseVisualStyleBackColor = true;
+            this.manageButton.Click += new System.EventHandler(this.Manage);
             // 
             // ProjectSettingsForm
             // 
@@ -161,7 +163,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.tabControl);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ProjectSettingsForm";
