@@ -35,16 +35,16 @@ namespace OpenCVManager
         /// </summary>
         public const string PackageGuidString = "f3a49ea2-f806-4c5c-b6cc-83c9b3c9c10b";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VsPackage"/> class.
-        /// </summary>
-        public VsPackage()
-        {
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="VsPackage"/> class.
+        ///// </summary>
+        //public VsPackage()
+        //{
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-        }
+        //}
 
         #region Package Members
 
