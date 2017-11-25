@@ -56,16 +56,11 @@ namespace OpenCVManager.Forms
             AvailableLibs = library.FindAvailableLibraries();
             ProjectLibs = GetOpenCvProjectLibraries(Project);
 
-            var availableVersions = Settings.Default.AvailableVersions?.
-                Split(';').
-                Distinct(StringComparer.OrdinalIgnoreCase).
-                ToArray();
-            
-            foreach (var availableVersion in availableVersions ?? new string[0])
+            foreach (var path in LibraryManager.GetAvailableVersions())
             {
-                if (!usedVersionComboBox.Items.Contains(availableVersion))
+                if (!usedVersionComboBox.Items.Contains(path))
                 {
-                    usedVersionComboBox.Items.Add(availableVersion);
+                    usedVersionComboBox.Items.Add(path);
                 }
             }
 
@@ -91,14 +86,8 @@ namespace OpenCVManager.Forms
             InitializeModules();
         }
 
-        private void OnKeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Escape)
-            {
-                DialogResult = DialogResult.Cancel;
-                Close();
-            }
-        }
+        private void OnKeyPress(object sender, KeyPressEventArgs e) => 
+            StandardEventHandlers.OnKeyPressEscapeCancel(sender, e);
 
         private void Save(object sender, EventArgs e)
         {

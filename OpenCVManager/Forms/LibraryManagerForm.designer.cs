@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "x86"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LibraryManagerForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -42,6 +45,9 @@
             this.optionsPage = new System.Windows.Forms.TabPage();
             this.optionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.okButton = new System.Windows.Forms.Button();
+            this.pathColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.versionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.bitHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl.SuspendLayout();
             this.librariesPage.SuspendLayout();
             this.optionsPage.SuspendLayout();
@@ -56,7 +62,7 @@
             this.cancelButton.TabIndex = 19;
             this.cancelButton.Text = "&Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
             // tabControl
             // 
@@ -137,7 +143,7 @@
             this.deleteButton.TabIndex = 20;
             this.deleteButton.Text = "&Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            this.deleteButton.Click += new System.EventHandler(this.Delete);
             // 
             // addButton
             // 
@@ -148,15 +154,20 @@
             this.addButton.TabIndex = 19;
             this.addButton.Text = "&Add";
             this.addButton.UseVisualStyleBackColor = true;
-            this.addButton.Click += new System.EventHandler(this.addButton_Click);
+            this.addButton.Click += new System.EventHandler(this.Add);
             // 
             // listView
             // 
             this.listView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.pathColumn,
+            this.bitHeader,
+            this.versionHeader});
             this.listView.FullRowSelect = true;
-            this.listView.HideSelection = false;
+            this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
             this.listView.Location = new System.Drawing.Point(6, 6);
             this.listView.MultiSelect = false;
             this.listView.Name = "listView";
@@ -197,7 +208,24 @@
             this.okButton.TabIndex = 18;
             this.okButton.Text = "&OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.okButton.Click += new System.EventHandler(this.Save);
+            // 
+            // pathColumn
+            // 
+            this.pathColumn.Text = "Path";
+            this.pathColumn.Width = 269;
+            // 
+            // versionHeader
+            // 
+            this.versionHeader.DisplayIndex = 1;
+            this.versionHeader.Text = "Version";
+            this.versionHeader.Width = 86;
+            // 
+            // bitHeader
+            // 
+            this.bitHeader.DisplayIndex = 2;
+            this.bitHeader.Text = "Bit";
+            this.bitHeader.Width = 40;
             // 
             // LibraryManagerForm
             // 
@@ -215,6 +243,7 @@
             this.Name = "LibraryManagerForm";
             this.ShowInTaskbar = false;
             this.Text = "OpenCV Libraries Manager";
+            this.Load += new System.EventHandler(this.OnLoad);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
             this.tabControl.ResumeLayout(false);
             this.librariesPage.ResumeLayout(false);
@@ -238,5 +267,8 @@
         private System.Windows.Forms.TabPage optionsPage;
         private System.Windows.Forms.PropertyGrid optionsPropertyGrid;
         private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.ColumnHeader pathColumn;
+        private System.Windows.Forms.ColumnHeader bitHeader;
+        private System.Windows.Forms.ColumnHeader versionHeader;
     }
 }
