@@ -42,7 +42,7 @@ namespace OpenCVManager.Forms
 
         #region Private methods
 
-        private const string UserVersionGlobalVariableName = "OpenCVManagerUsedVersion";
+        private const string UserVersionGlobalVariableName = "OpenCVManager_UsedVersion";
 
         //TODO: $(Any) $(Any3.3.0) $(Any3.3.0+)
         private void InitializeModules()
@@ -57,7 +57,11 @@ namespace OpenCVManager.Forms
                 Select(GetName).ToList();
             ProjectLibs = GetOpenCvProjectLibraries(Project);
 
-            var availableVersions = Settings.Default.AvailableVersions?.Split(';').Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+            var availableVersions = Settings.Default.AvailableVersions?.
+                Split(';').
+                Distinct(StringComparer.OrdinalIgnoreCase).
+                ToArray();
+
             foreach (var availableVersion in availableVersions)
             {
                 if (!usedVersionComboBox.Items.Contains(availableVersion))
