@@ -9,7 +9,7 @@ namespace OpenCVManager.Commands
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class OptionsCommand
+    internal sealed class SettingsCommand
     {
         /// <summary>
         /// Command ID.
@@ -27,11 +27,11 @@ namespace OpenCVManager.Commands
         private readonly Package _package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OptionsCommand"/> class.
+        /// Initializes a new instance of the <see cref="SettingsCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private OptionsCommand(Package package)
+        private SettingsCommand(Package package)
         {
             _package = package ?? throw new ArgumentNullException(nameof(package));
 
@@ -49,7 +49,7 @@ namespace OpenCVManager.Commands
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static OptionsCommand Instance {
+        public static SettingsCommand Instance {
             get;
             private set;
         }
@@ -65,7 +65,7 @@ namespace OpenCVManager.Commands
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            Instance = new OptionsCommand(package);
+            Instance = new SettingsCommand(package);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace OpenCVManager.Commands
         private void MenuItemCallback(object sender, EventArgs e)
         {
             //var message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", GetType().FullName);
-            //var title = "OptionsCommand";
+            //var title = "SettingsCommand";
 
             // Show a message box to prove we were here
             //VsShellUtilities.ShowMessageBox(ServiceProvider, message, title,

@@ -55,8 +55,14 @@
     <DeployExtension>True</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\OptionsCommand.cs" />
+    <Compile Include="Commands\SettingsCommand.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
+    <Compile Include="Forms\LibraryManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LibraryManagerForm.designer.cs">
+      <DependentUpon>LibraryManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProjecSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,13 +199,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\OptionsCommand.png" />
+    <Content Include="Resources\SettingsCommand.png" />
     <Content Include="Resources\VSPackage.ico" />
     <VSCTCompile Include="VsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\LibraryManagerForm.resx">
+      <DependentUpon>LibraryManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjecSettingsForm.resx">
       <DependentUpon>ProjecSettingsForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -55,7 +55,7 @@ namespace OpenCVManager
         protected override void Initialize()
         {
             base.Initialize();
-            OptionsCommand.Initialize(this);
+            SettingsCommand.Initialize(this);
         }
 
         #endregion

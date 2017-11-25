@@ -33,7 +33,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.libsPage = new System.Windows.Forms.TabPage();
             this.libsListBox = new System.Windows.Forms.CheckedListBox();
-            this.settingsPage = new System.Windows.Forms.TabPage();
+            this.optionsPage = new System.Windows.Forms.TabPage();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.usedVersionComboBox = new System.Windows.Forms.ComboBox();
@@ -41,7 +41,7 @@
             label = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.libsPage.SuspendLayout();
-            this.settingsPage.SuspendLayout();
+            this.optionsPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // label
@@ -68,7 +68,7 @@
             // tabControl
             // 
             this.tabControl.Controls.Add(this.libsPage);
-            this.tabControl.Controls.Add(this.settingsPage);
+            this.tabControl.Controls.Add(this.optionsPage);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -97,16 +97,16 @@
             this.libsListBox.Size = new System.Drawing.Size(449, 312);
             this.libsListBox.TabIndex = 0;
             // 
-            // settingsPage
+            // optionsPage
             // 
-            this.settingsPage.BackColor = System.Drawing.SystemColors.Control;
-            this.settingsPage.Controls.Add(this.OptionsPropertyGrid);
-            this.settingsPage.Location = new System.Drawing.Point(4, 22);
-            this.settingsPage.Name = "settingsPage";
-            this.settingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.settingsPage.Size = new System.Drawing.Size(455, 318);
-            this.settingsPage.TabIndex = 0;
-            this.settingsPage.Text = "Settings";
+            this.optionsPage.BackColor = System.Drawing.SystemColors.Control;
+            this.optionsPage.Controls.Add(this.OptionsPropertyGrid);
+            this.optionsPage.Location = new System.Drawing.Point(4, 22);
+            this.optionsPage.Name = "optionsPage";
+            this.optionsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.optionsPage.Size = new System.Drawing.Size(455, 318);
+            this.optionsPage.TabIndex = 0;
+            this.optionsPage.Text = "Options";
             // 
             // saveButton
             // 
@@ -166,12 +166,12 @@
             this.MaximizeBox = false;
             this.Name = "ProjectSettingsForm";
             this.ShowInTaskbar = false;
-            this.Text = "OpenCV Manager Options";
+            this.Text = "OpenCV Manager Settings";
             this.Load += new System.EventHandler(this.OnLoad);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
             this.tabControl.ResumeLayout(false);
             this.libsPage.ResumeLayout(false);
-            this.settingsPage.ResumeLayout(false);
+            this.optionsPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,7 +181,7 @@
 
         private System.Windows.Forms.PropertyGrid OptionsPropertyGrid;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage settingsPage;
+        private System.Windows.Forms.TabPage optionsPage;
         private System.Windows.Forms.TabPage libsPage;
         private System.Windows.Forms.CheckedListBox libsListBox;
         private System.Windows.Forms.Button saveButton;

@@ -52,11 +52,11 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidVsPackageCmdSet" id="OptionsCommandId" priority="0x0099" type="Button">
+      <Button guid="guidVsPackageCmdSet" id="SettingsCommandId" priority="0x0099" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_PROPERTIES" />
         <Icon guid="guidImages" id="bmpPicOpenCV" />
         <Strings>
-          <ButtonText>OpenCV Manager Options</ButtonText>
+          <ButtonText>OpenCV Manager Settings</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -68,7 +68,7 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\OptionsCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicOpenCV"/>
+      <Bitmap guid="guidImages" href="Resources\SettingsCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicOpenCV"/>
     </Bitmaps>
   </Commands>
 
@@ -78,7 +78,7 @@
 
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidVsPackageCmdSet" value="{d653f5fd-8004-4f1c-8d17-cf892d0bbe7c}">
-      <IDSymbol name="OptionsCommandId" value="0x0100" />
+      <IDSymbol name="SettingsCommandId" value="0x0100" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{00d1862f-56ed-406b-87e0-ffa633ec5f43}" >
