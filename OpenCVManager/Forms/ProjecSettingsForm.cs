@@ -153,11 +153,24 @@ namespace OpenCVManager.Forms
 
         #region Static methods
 
-        public static string GetName(string path) =>
-            Path.GetFileNameWithoutExtension(path)?.Replace("opencv_", "").Replace(GetVersion(path), "");
+        public static string GetName(string libPath)
+        {
+            libPath = !string.IsNullOrWhiteSpace(libPath) ? libPath : throw new ArgumentNullException(nameof(libPath));
+
+            var name = Path.GetFileNameWithoutExtension(libPath).Replace("opencv_", "");
+            var version = GetVersion(libPath);
+            if (!string.IsNullOrWhiteSpace(version))
+            {
+                name = name.Replace(version, "");
+            }
+
+            return name;
+        }
 
         public static string GetVersion(string libPath)
         {
+            libPath = !string.IsNullOrWhiteSpace(libPath) ? libPath : throw new ArgumentNullException(nameof(libPath));
+
             var name = Path.GetFileNameWithoutExtension(libPath);
             if (name == null)
             {
@@ -172,12 +185,7 @@ namespace OpenCVManager.Forms
                 character = name[index];
             }
 
-            if (index >= name.Length - 1)
-            {
-                throw new ArgumentException(@"Lib name should be ended for digit characters", nameof(libPath));
-            }
-
-            return name.Substring(index + 1);
+            return index < name.Length - 1 ? name.Substring(index + 1) : string.Empty;
         }
 
         public static List<string> GetOpenCvProjectLibraries(Project project) => LibraryUtilities.
