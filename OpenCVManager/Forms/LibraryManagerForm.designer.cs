@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "x86"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LibraryManagerForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -42,12 +39,12 @@
             this.deleteButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.listView = new System.Windows.Forms.ListView();
+            this.pathColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.capacityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.versionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.optionsPage = new System.Windows.Forms.TabPage();
             this.optionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.okButton = new System.Windows.Forms.Button();
-            this.pathColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.versionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.bitHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl.SuspendLayout();
             this.librariesPage.SuspendLayout();
             this.optionsPage.SuspendLayout();
@@ -163,11 +160,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.pathColumn,
-            this.bitHeader,
-            this.versionHeader});
+            this.versionHeader,
+            this.capacityHeader});
             this.listView.FullRowSelect = true;
-            this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
             this.listView.Location = new System.Drawing.Point(6, 6);
             this.listView.MultiSelect = false;
             this.listView.Name = "listView";
@@ -175,6 +170,21 @@
             this.listView.TabIndex = 18;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
+            // 
+            // pathColumn
+            // 
+            this.pathColumn.Text = "Path";
+            this.pathColumn.Width = 269;
+            // 
+            // capacityHeader
+            // 
+            this.capacityHeader.Text = "Capacity";
+            this.capacityHeader.Width = 54;
+            // 
+            // versionHeader
+            // 
+            this.versionHeader.Text = "Version";
+            this.versionHeader.Width = 69;
             // 
             // optionsPage
             // 
@@ -209,23 +219,6 @@
             this.okButton.Text = "&OK";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.Save);
-            // 
-            // pathColumn
-            // 
-            this.pathColumn.Text = "Path";
-            this.pathColumn.Width = 269;
-            // 
-            // versionHeader
-            // 
-            this.versionHeader.DisplayIndex = 1;
-            this.versionHeader.Text = "Version";
-            this.versionHeader.Width = 86;
-            // 
-            // bitHeader
-            // 
-            this.bitHeader.DisplayIndex = 2;
-            this.bitHeader.Text = "Bit";
-            this.bitHeader.Width = 40;
             // 
             // LibraryManagerForm
             // 
@@ -268,7 +261,7 @@
         private System.Windows.Forms.PropertyGrid optionsPropertyGrid;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.ColumnHeader pathColumn;
-        private System.Windows.Forms.ColumnHeader bitHeader;
+        private System.Windows.Forms.ColumnHeader capacityHeader;
         private System.Windows.Forms.ColumnHeader versionHeader;
     }
 }

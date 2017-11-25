@@ -33,6 +33,8 @@ namespace OpenCVManager.Core
 
         #region Public methods
 
+        public string GetVersion() => GetVersion(FindAvailableLibraries().FirstOrDefault() ?? "Unknown");
+
         public List<string> FindAvailableLibraries() => SubFoldersForFind.
             SelectMany(subFolder => LibraryUtilities.GetAvailableLibraries(Path.Combine(LibraryPath, subFolder))).
             Select(GetName).

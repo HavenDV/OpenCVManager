@@ -17,10 +17,11 @@ namespace OpenCVManager.Forms
             listView.Items.Clear();
             foreach (var path in LibraryManager.GetAvailableVersions()) 
             {
+                var library = new Library(path);
                 listView.Items.Add(new ListViewItem(path)
                 {
                     Tag = path,
-                    SubItems = { "3.3.0", "x86" }
+                    SubItems = { library.GetVersion(), "x86" }
                 });
             }
         }
