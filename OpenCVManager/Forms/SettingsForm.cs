@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
+using OpenCVManager.Core;
 using OpenCVManager.Extensions;
 using OpenCVManager.Properties;
 using OpenCVManager.Utilities;
 
 namespace OpenCVManager.Forms
 {
-    public partial class ProjectSettingsForm : Form
+    public partial class SettingsForm : Form
     {
         #region Properties
 
@@ -29,7 +29,7 @@ namespace OpenCVManager.Forms
 
         #region Constructors
 
-        public ProjectSettingsForm(Project project)
+        public SettingsForm(Project project)
         {
             Project = project ?? throw new ArgumentNullException(nameof(project));
 
@@ -52,17 +52,16 @@ namespace OpenCVManager.Forms
             UsedVersion = Project.TryGetGlobalVariable(UserVersionGlobalVariableName, out string result)
                 ? result : string.Empty;
 
-            var libraryPath = @"D:\Libraries\opencv\3.3.0";
-            AvailableLibs = LibraryUtilities.GetAvailableLibraries(Path.Combine(libraryPath, "install", "x64", "vc15")).
-                Select(GetName).ToList();
+            var library = new Library(@"D:\Libraries\opencv\3.3.0");
+            AvailableLibs = library.FindAvailableLibraries();
             ProjectLibs = GetOpenCvProjectLibraries(Project);
 
             var availableVersions = Settings.Default.AvailableVersions?.
                 Split(';').
                 Distinct(StringComparer.OrdinalIgnoreCase).
                 ToArray();
-
-            foreach (var availableVersion in availableVersions)
+            
+            foreach (var availableVersion in availableVersions ?? new string[0])
             {
                 if (!usedVersionComboBox.Items.Contains(availableVersion))
                 {
@@ -132,8 +131,7 @@ namespace OpenCVManager.Forms
                     break;
 
                 case CheckState.Unchecked:
-                    var name = (sender as CheckedListBox)?.Items[e.Index] as string;
-                    if (name == null)
+                    if (!((sender as CheckedListBox)?.Items[e.Index] is string name))
                     {
                         return;
                     }
@@ -160,44 +158,9 @@ namespace OpenCVManager.Forms
 
         #region Static methods
 
-        public static string GetName(string libPath)
-        {
-            libPath = !string.IsNullOrWhiteSpace(libPath) ? libPath : throw new ArgumentNullException(nameof(libPath));
-
-            var name = Path.GetFileNameWithoutExtension(libPath).Replace("opencv_", "");
-            var version = GetVersion(libPath);
-            if (!string.IsNullOrWhiteSpace(version))
-            {
-                name = name.Replace(version, "");
-            }
-
-            return name;
-        }
-
-        public static string GetVersion(string libPath)
-        {
-            libPath = !string.IsNullOrWhiteSpace(libPath) ? libPath : throw new ArgumentNullException(nameof(libPath));
-
-            var name = Path.GetFileNameWithoutExtension(libPath);
-            if (name == null)
-            {
-                throw new ArgumentException(@"Incorrect lib path", nameof(libPath));
-            }
-
-            var index = name.Length - 1;
-            var character = name[index];
-            while (char.IsDigit(character))
-            {
-                index--;
-                character = name[index];
-            }
-
-            return index < name.Length - 1 ? name.Substring(index + 1) : string.Empty;
-        }
-
-        public static List<string> GetOpenCvProjectLibraries(Project project) => LibraryUtilities.
+        private static List<string> GetOpenCvProjectLibraries(Project project) => LibraryUtilities.
             GetVcProjectLibraries(project, "opencv_").
-            Select(GetName).
+            Select(Library.GetName).
             ToList();
 
         #endregion

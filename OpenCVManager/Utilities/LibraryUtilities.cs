@@ -46,14 +46,18 @@ namespace OpenCVManager.Utilities
             return libs;
         }
 
-        public static List<string> GetAvailableLibraries(string installPath, string pattern = "*.lib")
+        public static List<string> GetAvailableLibraries(string librariesPath, string pattern = "*.lib")
         {
-            var libPath = installPath + @"\lib\";
-            var libs = Directory.EnumerateFiles(libPath, pattern).ToList();
+            if (!Directory.Exists(librariesPath))
+            {
+                return new List<string>();
+            }
 
-            return libs.Where(item =>
+            var libraries = Directory.EnumerateFiles(librariesPath, pattern).ToList();
+
+            return libraries.Where(item =>
                 !item.Contains("d.lib") ||
-                !libs.Contains(item.Replace("d.lib", ".lib"))).ToList();
+                !libraries.Contains(item.Replace("d.lib", ".lib"))).ToList();
         }
     }
 }

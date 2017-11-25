@@ -1,6 +1,6 @@
 ﻿namespace OpenCVManager.Forms
 {
-    partial class ProjectSettingsForm
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectSettingsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.OptionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.libsPage = new System.Windows.Forms.TabPage();
@@ -152,7 +152,7 @@
             this.manageButton.UseVisualStyleBackColor = true;
             this.manageButton.Click += new System.EventHandler(this.Manage);
             // 
-            // ProjectSettingsForm
+            // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -166,7 +166,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "ProjectSettingsForm";
+            this.Name = "SettingsForm";
             this.ShowInTaskbar = false;
             this.Text = "OpenCV Manager Settings";
             this.Load += new System.EventHandler(this.OnLoad);
