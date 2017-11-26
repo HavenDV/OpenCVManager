@@ -31,6 +31,7 @@ namespace OpenCVManager.Core
             Settings.Default.AvailableVersions = ToVersionsString(GetAvailableVersions().Except(new[] { path }));
 
         public static void Save() => Settings.Default.Save();
+        public static void Cancel() => Settings.Default.Reload();
 
         public static char VersionsSeparator { get; } = ';';
 

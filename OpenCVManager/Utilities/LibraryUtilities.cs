@@ -70,12 +70,12 @@ namespace OpenCVManager.Utilities
             return Directory.EnumerateFiles(librariesPath, pattern).ToList();
         }
 
-        public static List<string> FindAvailableLibraries(string path, IEnumerable<string> subfolders) => subfolders.
-            SelectMany(subFolder => FindAvailableLibraries(Path.Combine(path, subFolder))).
+        public static List<string> FindAvailableLibraries(string path, IEnumerable<string> subfolders, string pattern = "*.lib") => subfolders.
+            SelectMany(subFolder => FindAvailableLibraries(Path.Combine(path, subFolder), pattern)).
             ToList();
 
-        public static List<string> FindAvailableDlls(string path, IEnumerable<string> subfolders) => subfolders.
-            SelectMany(subFolder => FindAvailableDlls(Path.Combine(path, subFolder))).
+        public static List<string> FindAvailableDlls(string path, IEnumerable<string> subfolders, string pattern = "*.dll") => subfolders.
+            SelectMany(subFolder => FindAvailableDlls(Path.Combine(path, subFolder), pattern)).
             ToList();
     }
 }

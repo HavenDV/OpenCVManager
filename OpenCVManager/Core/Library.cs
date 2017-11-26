@@ -13,13 +13,14 @@ namespace OpenCVManager.Core
         public string LibraryPath { get; }
         public List<string> AvailableLibraries { get; }
         public List<string> AvailableDlls { get; }
+        public List<string> AvailableExes { get; }
         public List<string> AvailableModules { get; }
         public string VersionShort { get; } = "Unknown";
         public bool? Is64Bit { get; }
         public string MachineType => Is64Bit.HasValue ? Is64Bit.Value ? "x64" : "x86" : "Unknown";
         public string Version { get; } = "Unknown";
 
-        public IEnumerable<string> LibrariesSubFolders { get; } = new List<string>
+        public IEnumerable<string> LibrariesSubFolders { get; } = new []
         {
             Path.Combine("install", "x64", "vc15", "lib"),
             Path.Combine("install", "x86", "vc15", "lib"),
@@ -28,7 +29,7 @@ namespace OpenCVManager.Core
             "lib", ""
         };
 
-        public IEnumerable<string> DllSubFolders { get; } = new List<string>
+        public IEnumerable<string> DllSubFolders { get; } = new []
         {
             Path.Combine("install", "x64", "vc15", "bin"),
             Path.Combine("install", "x86", "vc15", "bin"),
@@ -43,9 +44,13 @@ namespace OpenCVManager.Core
 
         public Library(string path)
         {
+            path = !string.IsNullOrWhiteSpace(path) ? path : throw new ArgumentNullException(nameof(path));
+            path = Directory.Exists(path) ? path : throw new DirectoryNotFoundException();
+
             LibraryPath = path;
             AvailableLibraries = LibraryUtilities.FindAvailableLibraries(path, LibrariesSubFolders);
             AvailableDlls = LibraryUtilities.FindAvailableDlls(path, DllSubFolders);
+            AvailableExes = LibraryUtilities.FindAvailableDlls(path, DllSubFolders, "*.exe");
             if (!AvailableLibraries.Any() )
             {
                 return;
