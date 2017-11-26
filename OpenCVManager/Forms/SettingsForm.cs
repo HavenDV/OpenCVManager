@@ -21,7 +21,7 @@ namespace OpenCVManager.Forms
             private set => usedVersionComboBox.Text = value;
         }
 
-        public List<string> AvailableLibs { get; private set; }
+        public List<string> AvailableModules { get; private set; }
         public List<string> ProjectLibs { get; private set; }
         public bool IsInitialized { get; private set; }
 
@@ -35,7 +35,7 @@ namespace OpenCVManager.Forms
 
             InitializeComponent();
 
-            libsListBox.ItemCheck += OnItemCheck;
+            modulesListBox.ItemCheck += OnItemCheck;
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace OpenCVManager.Forms
                 ? result : string.Empty;
 
             var library = new Library(@"D:\Libraries\opencv\3.3.0");
-            AvailableLibs = library.FindAvailableLibraries();
+            AvailableModules = library.AvailableModules;
             ProjectLibs = GetOpenCvProjectLibraries(Project);
 
             foreach (var path in LibraryManager.GetAvailableVersions())
@@ -64,14 +64,14 @@ namespace OpenCVManager.Forms
                 }
             }
 
-            libsListBox.Items.Clear();
-            foreach (var lib in AvailableLibs)
+            modulesListBox.Items.Clear();
+            foreach (var name in AvailableModules)
             {
-                libsListBox.Items.Add(lib, ProjectLibs.Contains(lib, StringComparer.OrdinalIgnoreCase));
+                modulesListBox.Items.Add(name, ProjectLibs.Contains(name, StringComparer.OrdinalIgnoreCase));
             }
-            foreach (var lib in ProjectLibs.Except(AvailableLibs, StringComparer.OrdinalIgnoreCase))
+            foreach (var lib in ProjectLibs.Except(AvailableModules, StringComparer.OrdinalIgnoreCase))
             {
-                libsListBox.Items.Add(lib, CheckState.Indeterminate);
+                modulesListBox.Items.Add(lib, CheckState.Indeterminate);
             }
 
             IsInitialized = true;
@@ -125,7 +125,7 @@ namespace OpenCVManager.Forms
                         return;
                     }
 
-                    var isAvailable = AvailableLibs.Contains(name);
+                    var isAvailable = AvailableModules.Contains(name);
                     e.NewValue = isAvailable ? CheckState.Checked : CheckState.Indeterminate;
                     if (!isAvailable)
                     {

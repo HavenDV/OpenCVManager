@@ -21,7 +21,7 @@ namespace OpenCVManager.Forms
                 listView.Items.Add(new ListViewItem(path)
                 {
                     Tag = path,
-                    SubItems = { library.GetVersion(), "x86" }
+                    SubItems = { library.Version, library.MachineType }
                 });
             }
         }

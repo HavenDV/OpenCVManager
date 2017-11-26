@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.OptionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.libsPage = new System.Windows.Forms.TabPage();
-            this.libsListBox = new System.Windows.Forms.CheckedListBox();
+            this.modulesPage = new System.Windows.Forms.TabPage();
+            this.modulesListBox = new System.Windows.Forms.CheckedListBox();
             this.optionsPage = new System.Windows.Forms.TabPage();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
@@ -41,7 +41,7 @@
             this.manageButton = new System.Windows.Forms.Button();
             label = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
-            this.libsPage.SuspendLayout();
+            this.modulesPage.SuspendLayout();
             this.optionsPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,7 +68,7 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.libsPage);
+            this.tabControl.Controls.Add(this.modulesPage);
             this.tabControl.Controls.Add(this.optionsPage);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
@@ -76,27 +76,27 @@
             this.tabControl.Size = new System.Drawing.Size(463, 344);
             this.tabControl.TabIndex = 10;
             // 
-            // libsPage
+            // modulesPage
             // 
-            this.libsPage.Controls.Add(this.libsListBox);
-            this.libsPage.Location = new System.Drawing.Point(4, 22);
-            this.libsPage.Name = "libsPage";
-            this.libsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.libsPage.Size = new System.Drawing.Size(455, 318);
-            this.libsPage.TabIndex = 2;
-            this.libsPage.Text = "Libs";
+            this.modulesPage.Controls.Add(this.modulesListBox);
+            this.modulesPage.Location = new System.Drawing.Point(4, 22);
+            this.modulesPage.Name = "modulesPage";
+            this.modulesPage.Padding = new System.Windows.Forms.Padding(3);
+            this.modulesPage.Size = new System.Drawing.Size(455, 318);
+            this.modulesPage.TabIndex = 2;
+            this.modulesPage.Text = "Modules";
             // 
-            // libsListBox
+            // modulesListBox
             // 
-            this.libsListBox.CheckOnClick = true;
-            this.libsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.libsListBox.FormattingEnabled = true;
-            this.libsListBox.IntegralHeight = false;
-            this.libsListBox.Location = new System.Drawing.Point(3, 3);
-            this.libsListBox.MultiColumn = true;
-            this.libsListBox.Name = "libsListBox";
-            this.libsListBox.Size = new System.Drawing.Size(449, 312);
-            this.libsListBox.TabIndex = 0;
+            this.modulesListBox.CheckOnClick = true;
+            this.modulesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.modulesListBox.FormattingEnabled = true;
+            this.modulesListBox.IntegralHeight = false;
+            this.modulesListBox.Location = new System.Drawing.Point(3, 3);
+            this.modulesListBox.MultiColumn = true;
+            this.modulesListBox.Name = "modulesListBox";
+            this.modulesListBox.Size = new System.Drawing.Size(449, 312);
+            this.modulesListBox.TabIndex = 0;
             // 
             // optionsPage
             // 
@@ -172,7 +172,7 @@
             this.Load += new System.EventHandler(this.OnLoad);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
             this.tabControl.ResumeLayout(false);
-            this.libsPage.ResumeLayout(false);
+            this.modulesPage.ResumeLayout(false);
             this.optionsPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -184,8 +184,8 @@
         private System.Windows.Forms.PropertyGrid OptionsPropertyGrid;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage optionsPage;
-        private System.Windows.Forms.TabPage libsPage;
-        private System.Windows.Forms.CheckedListBox libsListBox;
+        private System.Windows.Forms.TabPage modulesPage;
+        private System.Windows.Forms.CheckedListBox modulesListBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.ComboBox usedVersionComboBox;

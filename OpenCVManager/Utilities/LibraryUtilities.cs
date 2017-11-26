@@ -46,7 +46,7 @@ namespace OpenCVManager.Utilities
             return libs;
         }
 
-        public static List<string> GetAvailableLibraries(string librariesPath, string pattern = "*.lib")
+        public static List<string> FindAvailableLibraries(string librariesPath, string pattern = "*.lib")
         {
             if (!Directory.Exists(librariesPath))
             {
@@ -59,5 +59,23 @@ namespace OpenCVManager.Utilities
                 !item.Contains("d.lib") ||
                 !libraries.Contains(item.Replace("d.lib", ".lib"))).ToList();
         }
+
+        public static List<string> FindAvailableDlls(string librariesPath, string pattern = "*.dll")
+        {
+            if (!Directory.Exists(librariesPath))
+            {
+                return new List<string>();
+            }
+
+            return Directory.EnumerateFiles(librariesPath, pattern).ToList();
+        }
+
+        public static List<string> FindAvailableLibraries(string path, IEnumerable<string> subfolders) => subfolders.
+            SelectMany(subFolder => FindAvailableLibraries(Path.Combine(path, subFolder))).
+            ToList();
+
+        public static List<string> FindAvailableDlls(string path, IEnumerable<string> subfolders) => subfolders.
+            SelectMany(subFolder => FindAvailableDlls(Path.Combine(path, subFolder))).
+            ToList();
     }
 }

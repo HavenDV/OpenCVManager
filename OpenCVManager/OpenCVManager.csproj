@@ -80,6 +80,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\BinaryUtilities.cs" />
     <Compile Include="Utilities\CompilerToolWrapper.cs" />
     <Compile Include="Utilities\EventHandlers.cs" />
     <Compile Include="Utilities\LinkerToolWrapper.cs" />
