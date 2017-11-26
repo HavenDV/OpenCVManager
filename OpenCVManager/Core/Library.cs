@@ -124,6 +124,11 @@ namespace OpenCVManager.Core
 
             IsAvailable = true;
             AvailableExes = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, "*.exe");
+            if (!AvailableExes.Any())
+            {
+                return;
+            }
+
             ExesPath = Path.GetDirectoryName(AvailableExes.First());
         }
 
