@@ -134,9 +134,6 @@
             // usedVersionComboBox
             // 
             this.usedVersionComboBox.FormattingEnabled = true;
-            this.usedVersionComboBox.Items.AddRange(new object[] {
-            "",
-            "$(Default)"});
             this.usedVersionComboBox.Location = new System.Drawing.Point(97, 365);
             this.usedVersionComboBox.Name = "usedVersionComboBox";
             this.usedVersionComboBox.Size = new System.Drawing.Size(257, 21);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using OpenCVManager.Core;
 using OpenCVManager.Utilities;
@@ -21,13 +22,14 @@ namespace OpenCVManager.Forms
         private void UpdateListBox()
         {
             listView.Items.Clear();
-            foreach (var path in LibraryManager.GetAvailableVersions())
+            foreach (var path in LibraryManager.GetSavedVersions())
             {
                 var library = new Library(path);
                 listView.Items.Add(new ListViewItem(path)
                 {
                     Tag = path,
-                    SubItems = { library.Version, library.MachineType }
+                    SubItems = { library.Version, library.MachineType },
+                    ForeColor = library.IsAvailable ? DefaultForeColor : Color.LightGray
                 });
             }
         }
@@ -41,14 +43,25 @@ namespace OpenCVManager.Forms
 
         private void Delete(object sender, EventArgs e)
         {
-            LibraryManager.DeleteVersion("test");
-
+            foreach (ListViewItem item in listView.SelectedItems)
+            {
+                LibraryManager.DeleteVersion(item.Text);
+            }
+            
             UpdateListBox();
         }
 
         private void Add(object sender, EventArgs e)
         {
-            LibraryManager.AddNewVersion("test");
+            using (var form = new AddNewVersionForm())
+            {
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                LibraryManager.AddNewVersion(form.VersionPath);
+            }
             
             UpdateListBox();
         }

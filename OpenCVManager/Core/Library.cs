@@ -10,22 +10,40 @@ namespace OpenCVManager.Core
     {
         #region Properties
 
+        public bool IsAvailable { get; }
+        public string Error { get; } = string.Empty;
+
         public string LibraryPath { get; }
+        public List<string> AvailableModules { get; } = new List<string>();
+
+        public string HeadersPath { get; }
+        public string LibrariesPath { get; }
+        public string DllsPath { get; }
+        public string ExesPath { get; }
+
+        public List<string> AvailableHeaders { get; }
         public List<string> AvailableLibraries { get; }
         public List<string> AvailableDlls { get; }
         public List<string> AvailableExes { get; }
-        public List<string> AvailableModules { get; }
+
+        public string Version { get; } = "Unknown";
         public string VersionShort { get; } = "Unknown";
+
         public bool? Is64Bit { get; }
         public string MachineType => Is64Bit.HasValue ? Is64Bit.Value ? "x64" : "x86" : "Unknown";
-        public string Version { get; } = "Unknown";
 
+        #region Subfolders
+        
         public IEnumerable<string> LibrariesSubFolders { get; } = new []
         {
             Path.Combine("install", "x64", "vc15", "lib"),
             Path.Combine("install", "x86", "vc15", "lib"),
             Path.Combine("x64", "vc15", "lib"),
             Path.Combine("x86", "vc15", "lib"),
+            Path.Combine("install", "x64", "vc14", "lib"),
+            Path.Combine("install", "x86", "vc14", "lib"),
+            Path.Combine("x64", "vc14", "lib"),
+            Path.Combine("x86", "vc14", "lib"),
             "lib", ""
         };
 
@@ -35,36 +53,78 @@ namespace OpenCVManager.Core
             Path.Combine("install", "x86", "vc15", "bin"),
             Path.Combine("x64", "vc15", "bin"),
             Path.Combine("x86", "vc15", "bin"),
+            Path.Combine("install", "x64", "vc14", "bin"),
+            Path.Combine("install", "x86", "vc14", "bin"),
+            Path.Combine("x64", "vc14", "bin"),
+            Path.Combine("x86", "vc14", "bin"),
             "bin", ""
         };
 
+        public IEnumerable<string> IncludeSubFolders { get; } = new[]
+        {
+            Path.Combine("install", "include", "opencv2"),
+            Path.Combine("include", "opencv2"),
+            "opencv2", ""
+        };
+
+        #endregion
+        
         #endregion
 
         #region Constructor
 
         public Library(string path)
         {
-            path = !string.IsNullOrWhiteSpace(path) ? path : throw new ArgumentNullException(nameof(path));
-            path = Directory.Exists(path) ? path : throw new DirectoryNotFoundException();
-
-            LibraryPath = path;
-            AvailableLibraries = LibraryUtilities.FindAvailableLibraries(path, LibrariesSubFolders);
-            AvailableDlls = LibraryUtilities.FindAvailableDlls(path, DllSubFolders);
-            AvailableExes = LibraryUtilities.FindAvailableDlls(path, DllSubFolders, "*.exe");
-            if (!AvailableLibraries.Any() )
+            if (string.IsNullOrWhiteSpace(path))
             {
+                Error = $"Argument is null or empty: {nameof(path)}";
+                return;
+            }
+            if (!Directory.Exists(path))
+            {
+                Error = $"Directory is not exists: {path}";
                 return;
             }
 
-            AvailableModules = AvailableLibraries.Select(GetName).ToList();
+            LibraryPath = path;
+
+            AvailableLibraries = LibraryUtilities.FindAvailableFiles(path, LibrariesSubFolders, "*.lib");
+            if (!AvailableLibraries.Any())
+            {
+                Error = "Libraries are not found";
+                return;
+            }
+
+            LibrariesPath = Path.GetDirectoryName(AvailableLibraries.First());
             VersionShort = FindVersion(AvailableLibraries);
             Version = ToFullVersion(VersionShort);
+            AvailableModules = AvailableLibraries.Select(GetName).ToList();
+            if (!AvailableModules.Any())
+            {
+                Error = "Modules are not found";
+                return;
+            }
 
+            AvailableDlls = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, "*.dll");
             if (!AvailableDlls.Any())
             {
+                Error = "Dlls are not found";
                 return;
             }
             Is64Bit = FindIs64Bit(AvailableDlls);
+            DllsPath = Path.GetDirectoryName(AvailableDlls.First());
+
+            AvailableHeaders = LibraryUtilities.FindAvailableFiles(path, IncludeSubFolders, "*.hpp");
+            if (!AvailableHeaders.Any())
+            {
+                Error = "Headers are not found";
+                return;
+            }
+            HeadersPath = Path.GetDirectoryName(AvailableHeaders.First());
+
+            IsAvailable = true;
+            AvailableExes = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, "*.exe");
+            ExesPath = Path.GetDirectoryName(AvailableExes.First());
         }
 
         #endregion
@@ -72,7 +132,7 @@ namespace OpenCVManager.Core
         #region Static methods
 
         public static string ToFullVersion(string shortVersion) =>
-            $"{shortVersion[0]}.{shortVersion.Substring(1, shortVersion.Length - 2)}.{shortVersion[shortVersion.Length - 1]}";
+            $"{shortVersion[0]}.{shortVersion[1]}.{shortVersion.Substring(2, shortVersion.Length - 2)}";
 
         public static string FindVersion(ICollection<string> libraries)
         {

@@ -46,36 +46,28 @@ namespace OpenCVManager.Utilities
             return libs;
         }
 
-        public static List<string> FindAvailableLibraries(string librariesPath, string pattern = "*.lib")
+        public static List<string> DebugFilter(ICollection<string> files) => files.Where(
+            item =>
+            {
+                var extension = Path.GetExtension(item);
+                var debugExtension = "d" + extension;
+
+                return !item.Contains(debugExtension) ||
+                !files.Contains(item.Replace(debugExtension, extension));
+            }).ToList();
+
+        public static List<string> FindAvailableFiles(string path, string pattern = "*.dll")
         {
-            if (!Directory.Exists(librariesPath))
+            if (!Directory.Exists(path))
             {
                 return new List<string>();
             }
 
-            var libraries = Directory.EnumerateFiles(librariesPath, pattern).ToList();
-
-            return libraries.Where(item =>
-                !item.Contains("d.lib") ||
-                !libraries.Contains(item.Replace("d.lib", ".lib"))).ToList();
+            return Directory.EnumerateFiles(path, pattern).ToList();
         }
 
-        public static List<string> FindAvailableDlls(string librariesPath, string pattern = "*.dll")
-        {
-            if (!Directory.Exists(librariesPath))
-            {
-                return new List<string>();
-            }
-
-            return Directory.EnumerateFiles(librariesPath, pattern).ToList();
-        }
-
-        public static List<string> FindAvailableLibraries(string path, IEnumerable<string> subfolders, string pattern = "*.lib") => subfolders.
-            SelectMany(subFolder => FindAvailableLibraries(Path.Combine(path, subFolder), pattern)).
-            ToList();
-
-        public static List<string> FindAvailableDlls(string path, IEnumerable<string> subfolders, string pattern = "*.dll") => subfolders.
-            SelectMany(subFolder => FindAvailableDlls(Path.Combine(path, subFolder), pattern)).
+        public static List<string> FindAvailableFiles(string path, IEnumerable<string> subfolders, string pattern = "*.*") => subfolders.
+            SelectMany(subFolder => FindAvailableFiles(Path.Combine(path, subFolder), pattern)).
             ToList();
     }
 }

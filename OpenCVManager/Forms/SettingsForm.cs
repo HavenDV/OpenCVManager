@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using EnvDTE;
 using OpenCVManager.Core;
 using OpenCVManager.Extensions;
-using OpenCVManager.Properties;
 using OpenCVManager.Utilities;
 
 namespace OpenCVManager.Forms
@@ -56,13 +55,7 @@ namespace OpenCVManager.Forms
             AvailableModules = library.AvailableModules;
             ProjectLibs = GetOpenCvProjectLibraries(Project);
 
-            foreach (var path in LibraryManager.GetAvailableVersions())
-            {
-                if (!usedVersionComboBox.Items.Contains(path))
-                {
-                    usedVersionComboBox.Items.Add(path);
-                }
-            }
+            UpdateAvailableVersions();
 
             modulesListBox.Items.Clear();
             foreach (var name in AvailableModules)
@@ -75,6 +68,22 @@ namespace OpenCVManager.Forms
             }
 
             IsInitialized = true;
+        }
+
+        private void UpdateAvailableVersions()
+        {
+            usedVersionComboBox.Items.Clear();
+            usedVersionComboBox.Items.Add(string.Empty);
+            usedVersionComboBox.Items.Add("$(Default)");
+
+            foreach (var path in LibraryManager.GetSavedVersions())
+            {
+                var library = new Library(path);
+                if (!usedVersionComboBox.Items.Contains(path) && library.IsAvailable)
+                {
+                    usedVersionComboBox.Items.Add(path);
+                }
+            }
         }
 
         #endregion
@@ -91,12 +100,8 @@ namespace OpenCVManager.Forms
 
         private void Save(object sender, EventArgs e)
         {
+            // TODO: check used exists in available
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
-
-            var availableVersions = usedVersionComboBox.Items.Cast<string>()
-                .Distinct(StringComparer.OrdinalIgnoreCase);
-            Settings.Default.AvailableVersions = string.Join(";", availableVersions);
-            Settings.Default.Save();
 
             Close();
         }
@@ -141,6 +146,8 @@ namespace OpenCVManager.Forms
             {
                 form.ShowDialog();
             }
+
+            UpdateAvailableVersions();
         }
 
         #endregion
