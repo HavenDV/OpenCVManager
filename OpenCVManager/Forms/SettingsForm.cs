@@ -20,7 +20,7 @@ namespace OpenCVManager.Forms
             private set => usedVersionComboBox.Text = value;
         }
 
-        public List<string> AvailableModules { get; private set; }
+        public Library UsedLibrary { get; private set; }
         public List<string> ProjectLibs { get; private set; }
         public bool IsInitialized { get; private set; }
 
@@ -42,34 +42,7 @@ namespace OpenCVManager.Forms
         #region Private methods
 
         private const string UserVersionGlobalVariableName = "OpenCVManager_UsedVersion";
-
-        //TODO: $(Any) $(Any3.3.0) $(Any3.3.0+)
-        private void InitializeModules()
-        {
-            IsInitialized = false;
-
-            UsedVersion = Project.TryGetGlobalVariable(UserVersionGlobalVariableName, out string result)
-                ? result : string.Empty;
-
-            var library = new Library(@"D:\Libraries\opencv\3.3.0");
-            AvailableModules = library.AvailableModules;
-            ProjectLibs = GetOpenCvProjectLibraries(Project);
-
-            UpdateAvailableVersions();
-
-            modulesListBox.Items.Clear();
-            foreach (var name in AvailableModules)
-            {
-                modulesListBox.Items.Add(name, ProjectLibs.Contains(name, StringComparer.OrdinalIgnoreCase));
-            }
-            foreach (var lib in ProjectLibs.Except(AvailableModules, StringComparer.OrdinalIgnoreCase))
-            {
-                modulesListBox.Items.Add(lib, CheckState.Indeterminate);
-            }
-
-            IsInitialized = true;
-        }
-
+        
         private void UpdateAvailableVersions()
         {
             usedVersionComboBox.Items.Clear();
@@ -86,13 +59,44 @@ namespace OpenCVManager.Forms
             }
         }
 
+        private void UpdateModules()
+        {
+            IsInitialized = false;
+
+            modulesListBox.Items.Clear();
+            foreach (var name in UsedLibrary.AvailableModules)
+            {
+                modulesListBox.Items.Add(name, UsedLibrary.IsAvailable && ProjectLibs.Contains(name, StringComparer.OrdinalIgnoreCase));
+            }
+            foreach (var lib in ProjectLibs.Except(UsedLibrary.AvailableModules, StringComparer.OrdinalIgnoreCase))
+            {
+                modulesListBox.Items.Add(lib, CheckState.Indeterminate);
+            }
+
+            IsInitialized = true;
+        }
+
         #endregion
 
         #region Event Handlers
 
         private void OnLoad(object sender, EventArgs e)
         {
-            InitializeModules();
+            ProjectLibs = GetOpenCvProjectLibraries(Project);
+
+            //TODO: $(Any) $(Any3.3.0) $(Any3.3.0+)
+            UsedVersion = Project.TryGetGlobalVariable(UserVersionGlobalVariableName, out string result)
+                ? result : string.Empty;
+            UsedLibrary = new Library(UsedVersion);
+
+            UpdateAvailableVersions();
+            UpdateModules();
+        }
+
+        private void usedVersionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UsedLibrary = new Library(UsedVersion);
+            UpdateModules();
         }
 
         private void OnKeyPress(object sender, KeyPressEventArgs e) => 
@@ -130,7 +134,7 @@ namespace OpenCVManager.Forms
                         return;
                     }
 
-                    var isAvailable = AvailableModules.Contains(name);
+                    var isAvailable = UsedLibrary.IsAvailable && UsedLibrary.AvailableModules.Contains(name);
                     e.NewValue = isAvailable ? CheckState.Checked : CheckState.Indeterminate;
                     if (!isAvailable)
                     {
@@ -154,8 +158,8 @@ namespace OpenCVManager.Forms
 
         #region Static methods
 
-        private static List<string> GetOpenCvProjectLibraries(Project project) => LibraryUtilities.
-            GetVcProjectLibraries(project, "opencv_").
+        private static List<string> GetOpenCvProjectLibraries(Project project) => project.
+            GetVcProjectLibraries("opencv_").
             Select(Library.GetName).
             ToList();
 

@@ -138,6 +138,7 @@
             this.usedVersionComboBox.Name = "usedVersionComboBox";
             this.usedVersionComboBox.Size = new System.Drawing.Size(257, 21);
             this.usedVersionComboBox.TabIndex = 14;
+            this.usedVersionComboBox.SelectedIndexChanged += new System.EventHandler(this.usedVersionComboBox_SelectedIndexChanged);
             // 
             // manageButton
             // 
