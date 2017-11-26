@@ -89,7 +89,7 @@
     <Compile Include="Utilities\BinaryUtilities.cs" />
     <Compile Include="Utilities\CompilerToolWrapper.cs" />
     <Compile Include="Utilities\EventHandlers.cs" />
-    <Compile Include="Utilities\LinkerToolWrapper.cs" />
+    <Compile Include="Extensions\VcLinkerToolExtensions.cs" />
     <Compile Include="Utilities\LibraryUtilities.cs" />
     <Compile Include="Utilities\SolutionUtilities.cs" />
     <Compile Include="VSPackage.cs" />

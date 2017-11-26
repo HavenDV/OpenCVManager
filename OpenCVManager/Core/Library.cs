@@ -169,6 +169,8 @@ namespace OpenCVManager.Core
             return name;
         }
 
+        public static string GetFileName(string name, string version) => $"opencv_{name}{version}";
+
         public static string GetVersion(string libPath)
         {
             libPath = !string.IsNullOrWhiteSpace(libPath) ? libPath : throw new ArgumentNullException(nameof(libPath));

@@ -102,10 +102,17 @@ namespace OpenCVManager.Forms
         private void OnKeyPress(object sender, KeyPressEventArgs e) => 
             StandardEventHandlers.OnKeyPressEscapeCancel(sender, e);
 
+        private string[] GetCheckedLibraries() => modulesListBox.CheckedItems.
+            Cast<object>().
+            Select(i => Library.GetFileName(i.ToString(), UsedLibrary.VersionShort)).
+            ToArray();
+
         private void Save(object sender, EventArgs e)
         {
             // TODO: check used exists in available
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
+            Project.DeleteProjectDependencies("Release", "x64", ProjectLibs.ToArray());
+            Project.AddProjectDependencies("Release", "x64", GetCheckedLibraries());
 
             Close();
         }
@@ -159,7 +166,7 @@ namespace OpenCVManager.Forms
         #region Static methods
 
         private static List<string> GetOpenCvProjectLibraries(Project project) => project.
-            GetVcProjectLibraries("opencv_").
+            GetProjectLibraries("opencv_").
             Select(Library.GetName).
             ToList();
 
