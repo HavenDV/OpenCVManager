@@ -20,8 +20,10 @@ namespace OpenCVManager.Forms
             private set => usedVersionComboBox.Text = value;
         }
 
+        public Library PreviousLibrary { get; private set; }
         public Library UsedLibrary { get; private set; }
-        public List<string> ProjectLibs { get; private set; }
+        public List<string> ProjectLibraries { get; private set; }
+        public List<string> ProjectModules { get; private set; }
         public bool IsInitialized { get; private set; }
 
         #endregion
@@ -66,9 +68,9 @@ namespace OpenCVManager.Forms
             modulesListBox.Items.Clear();
             foreach (var name in UsedLibrary.AvailableModules)
             {
-                modulesListBox.Items.Add(name, UsedLibrary.IsAvailable && ProjectLibs.Contains(name, StringComparer.OrdinalIgnoreCase));
+                modulesListBox.Items.Add(name, UsedLibrary.IsAvailable && ProjectModules.Contains(name, StringComparer.OrdinalIgnoreCase));
             }
-            foreach (var lib in ProjectLibs.Except(UsedLibrary.AvailableModules, StringComparer.OrdinalIgnoreCase))
+            foreach (var lib in ProjectModules.Except(UsedLibrary.AvailableModules, StringComparer.OrdinalIgnoreCase))
             {
                 modulesListBox.Items.Add(lib, CheckState.Indeterminate);
             }
@@ -82,18 +84,20 @@ namespace OpenCVManager.Forms
 
         private void OnLoad(object sender, EventArgs e)
         {
-            ProjectLibs = GetOpenCvProjectLibraries(Project);
+            ProjectLibraries = Project.GetProjectLibraries("opencv_").ToList();
+            ProjectModules = ProjectLibraries.Select(Library.GetName).ToList();
 
             //TODO: $(Any) $(Any3.3.0) $(Any3.3.0+)
             UsedVersion = Project.TryGetGlobalVariable(UserVersionGlobalVariableName, out string result)
                 ? result : string.Empty;
             UsedLibrary = new Library(UsedVersion);
+            PreviousLibrary = UsedLibrary;
 
             UpdateAvailableVersions();
             UpdateModules();
         }
 
-        private void usedVersionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void UsedVersionChanged(object sender, EventArgs e)
         {
             UsedLibrary = new Library(UsedVersion);
             UpdateModules();
@@ -104,15 +108,22 @@ namespace OpenCVManager.Forms
 
         private string[] GetCheckedLibraries() => modulesListBox.CheckedItems.
             Cast<object>().
-            Select(i => Library.GetFileName(i.ToString(), UsedLibrary.VersionShort)).
+            Select(i => Library.GetFileName(i.ToString(), UsedLibrary.VersionShort, ".lib")).
             ToArray();
 
         private void Save(object sender, EventArgs e)
         {
             // TODO: check used exists in available
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
-            Project.DeleteProjectDependencies("Release", "x64", ProjectLibs.ToArray());
+
+            Project.DeleteProjectDependencies("Release", "x64", ProjectLibraries.ToArray());
             Project.AddProjectDependencies("Release", "x64", GetCheckedLibraries());
+
+            Project.DeleteProjectLibraryDirectories("Release", "x64", PreviousLibrary.LibrariesPath);
+            Project.AddProjectLibraryDirectories("Release", "x64", UsedLibrary.LibrariesPath);
+
+            Project.DeleteProjectHeadersDirectories("Release", "x64", PreviousLibrary.HeadersPath);
+            Project.AddProjectHeadersDirectories("Release", "x64", UsedLibrary.HeadersPath);
 
             Close();
         }
@@ -160,15 +171,6 @@ namespace OpenCVManager.Forms
 
             UpdateAvailableVersions();
         }
-
-        #endregion
-
-        #region Static methods
-
-        private static List<string> GetOpenCvProjectLibraries(Project project) => project.
-            GetProjectLibraries("opencv_").
-            Select(Library.GetName).
-            ToList();
 
         #endregion
     }

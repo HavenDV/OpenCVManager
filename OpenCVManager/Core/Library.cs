@@ -120,7 +120,7 @@ namespace OpenCVManager.Core
                 Error = "Headers are not found";
                 return;
             }
-            HeadersPath = Path.GetDirectoryName(AvailableHeaders.First());
+            HeadersPath = Path.GetDirectoryName(Path.GetDirectoryName(AvailableHeaders.First()));
 
             IsAvailable = true;
             AvailableExes = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, "*.exe");
@@ -169,7 +169,7 @@ namespace OpenCVManager.Core
             return name;
         }
 
-        public static string GetFileName(string name, string version) => $"opencv_{name}{version}";
+        public static string GetFileName(string name, string version, string extension) => $"opencv_{name}{version}{extension}";
 
         public static string GetVersion(string libPath)
         {

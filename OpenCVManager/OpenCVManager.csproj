@@ -62,6 +62,7 @@
     <Compile Include="Core\Library.cs" />
     <Compile Include="Core\LibraryManager.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
+    <Compile Include="Extensions\VCCLCompilerToolExtensions.cs" />
     <Compile Include="Forms\AddNewVersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +92,7 @@
     <Compile Include="Utilities\EventHandlers.cs" />
     <Compile Include="Extensions\VcLinkerToolExtensions.cs" />
     <Compile Include="Utilities\LibraryUtilities.cs" />
+    <Compile Include="Utilities\PathUtilities.cs" />
     <Compile Include="Utilities\SolutionUtilities.cs" />
     <Compile Include="VSPackage.cs" />
   </ItemGroup>

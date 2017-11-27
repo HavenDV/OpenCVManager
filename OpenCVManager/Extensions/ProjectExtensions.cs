@@ -9,7 +9,7 @@ namespace OpenCVManager.Extensions
 {
     public static class ProjectExtensions
     {
-        public static VCLinkerTool GetLinkerTool(this Project project, string configurationName, string platformName)
+        public static VCConfiguration GetConfiguration(this Project project, string configurationName, string platformName)
         {
             if (!(project.Object is VCProject vcProject))
             {
@@ -18,32 +18,39 @@ namespace OpenCVManager.Extensions
 
             foreach (VCConfiguration configuration in (IVCCollection)vcProject.Configurations)
             {
-                //var compiler = CompilerToolWrapper.Create(config);
-                if (((IVCCollection)configuration.Tools).Item("VCLinkerTool") is VCLinkerTool linker)
+                if (!string.Equals(configuration.ConfigurationName, configurationName,
+                        StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(((VCPlatform)configuration.Platform).Name, platformName))
                 {
-                    if (!string.Equals(configuration.ConfigurationName, configurationName,
-                            StringComparison.OrdinalIgnoreCase) ||
-                        !string.Equals(((VCPlatform)configuration.Platform).Name, platformName))
-                    {
-                        continue;
-                    }
-
-                    return linker;
+                    continue;
                 }
+
+                return configuration;
             }
 
             throw new ArgumentException(@"Configuration not found", nameof(configurationName));
         }
+
+        public static T GetTool<T>(this Project project, string configurationName, string platformName, string toolName)
+            where T : class =>
+            ((IVCCollection)project.GetConfiguration(configurationName, platformName).Tools).
+            Item(toolName) as T;
+
+        public static VCLinkerTool GetLinkerTool(this Project project, string configurationName, string platformName) =>
+            project.GetTool<VCLinkerTool>(configurationName, platformName, "VCLinkerTool");
+
+        public static VCCLCompilerTool GetCompilerTool(this Project project, string configurationName, string platformName) =>
+            project.GetTool<VCCLCompilerTool>(configurationName, platformName, "VCCLCompilerTool");
 
         public static void AddProjectDependencies(this Project project, string configurationName, string platformName,
             params string[] dependencies) =>
             project.GetLinkerTool(configurationName, platformName).AddAdditionalDependencies(dependencies);
 
         public static void DeleteProjectDependencies(this Project project, string configurationName, string platformName,
-            params string[] dependencies) => 
+            params string[] dependencies) =>
             project.GetLinkerTool(configurationName, platformName).DeleteAdditionalDependencies(dependencies);
 
-        public static void AddVcProjectLibraryDirectories(this Project project, string configurationName, string platformName,
+        public static void AddProjectLibraryDirectories(this Project project, string configurationName, string platformName,
             params string[] directories) =>
             project.GetLinkerTool(configurationName, platformName).AddAdditionalLibraryDirectories(directories);
 
@@ -51,7 +58,15 @@ namespace OpenCVManager.Extensions
             params string[] directories) =>
             project.GetLinkerTool(configurationName, platformName).DeleteAdditionalLibraryDirectories(directories);
 
-        public static List<string> GetProjectLibraries(this Project project, string startsWith = null, string endsWith = null, bool withoutExtension = true)
+        public static void AddProjectHeadersDirectories(this Project project, string configurationName, string platformName,
+            params string[] directories) =>
+            project.GetCompilerTool(configurationName, platformName).AddAdditionalHeadersDirectories(directories);
+
+        public static void DeleteProjectHeadersDirectories(this Project project, string configurationName, string platformName,
+            params string[] directories) =>
+            project.GetCompilerTool(configurationName, platformName).DeleteAdditionalHeadersDirectories(directories);
+
+        public static List<string> GetProjectLibraries(this Project project, string startsWith = null, string endsWith = null, bool withoutExtension = false)
         {
             if (!(project.Object is VCProject vcProject))
             {
