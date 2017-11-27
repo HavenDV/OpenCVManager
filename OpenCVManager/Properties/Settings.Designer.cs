@@ -34,5 +34,29 @@ namespace OpenCVManager.Properties {
                 this["AvailableVersions"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Default_x86 {
+            get {
+                return ((string)(this["Default_x86"]));
+            }
+            set {
+                this["Default_x86"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Default_x64 {
+            get {
+                return ((string)(this["Default_x64"]));
+            }
+            set {
+                this["Default_x64"] = value;
+            }
+        }
     }
 }

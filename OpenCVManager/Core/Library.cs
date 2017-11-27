@@ -75,11 +75,17 @@ namespace OpenCVManager.Core
 
         public Library(string path)
         {
+            if (string.Equals("$(Default)", path, StringComparison.OrdinalIgnoreCase))
+            {
+                path = LibraryManager.DefaultX64;
+            }
+
             if (string.IsNullOrWhiteSpace(path))
             {
                 Error = $"Argument is null or empty: {nameof(path)}";
                 return;
             }
+
             if (!Directory.Exists(path))
             {
                 Error = $"Directory is not exists: {path}";

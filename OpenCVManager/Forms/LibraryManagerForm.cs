@@ -19,10 +19,12 @@ namespace OpenCVManager.Forms
 
         #region Private methods
 
-        private void UpdateListBox()
+        private void UpdateBoxes()
         {
             listView.Items.Clear();
-            foreach (var path in LibraryManager.GetSavedVersions())
+            defaultX86ComboBox.Items.Clear();
+            defaultX64ComboBox.Items.Clear();
+            foreach (var path in LibraryManager.SavedVersions)
             {
                 var library = new Library(path);
                 listView.Items.Add(new ListViewItem(path)
@@ -31,7 +33,24 @@ namespace OpenCVManager.Forms
                     SubItems = { library.Version, library.MachineType },
                     ForeColor = library.IsAvailable ? DefaultForeColor : Color.LightGray
                 });
+
+                if (!library.IsAvailable)
+                {
+                    continue;
+                }
+
+                if (library.Is64Bit.HasValue && library.Is64Bit.Value)
+                {
+                    defaultX64ComboBox.Items.Add(path);
+                }
+                else
+                {
+                    defaultX86ComboBox.Items.Add(path);
+                }
             }
+
+            defaultX86ComboBox.Text = LibraryManager.DefaultX86;
+            defaultX64ComboBox.Text = LibraryManager.DefaultX64;
         }
 
         #endregion
@@ -47,8 +66,8 @@ namespace OpenCVManager.Forms
             {
                 LibraryManager.DeleteVersion(item.Text);
             }
-            
-            UpdateListBox();
+
+            UpdateBoxes();
         }
 
         private void Add(object sender, EventArgs e)
@@ -62,9 +81,15 @@ namespace OpenCVManager.Forms
 
                 LibraryManager.AddNewVersion(form.VersionPath);
             }
-            
-            UpdateListBox();
+
+            UpdateBoxes();
         }
+
+        private void DefaultX86Changed(object sender, EventArgs e) =>
+            LibraryManager.DefaultX86 = defaultX86ComboBox.Text;
+
+        private void DefaultX64Changed(object sender, EventArgs e) => 
+            LibraryManager.DefaultX64 = defaultX64ComboBox.Text;
 
         private void Save(object sender, EventArgs e)
         {
@@ -82,7 +107,7 @@ namespace OpenCVManager.Forms
 
         private void OnLoad(object sender, EventArgs e)
         {
-            UpdateListBox();
+            UpdateBoxes();
         }
 
         #endregion

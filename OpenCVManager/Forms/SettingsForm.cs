@@ -51,7 +51,7 @@ namespace OpenCVManager.Forms
             usedVersionComboBox.Items.Add(string.Empty);
             usedVersionComboBox.Items.Add("$(Default)");
 
-            foreach (var path in LibraryManager.GetSavedVersions())
+            foreach (var path in LibraryManager.SavedVersions)
             {
                 var library = new Library(path);
                 if (!usedVersionComboBox.Items.Contains(path) && library.IsAvailable)

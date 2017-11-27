@@ -32,16 +32,16 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.librariesPage = new System.Windows.Forms.TabPage();
-            this.winCECombo = new System.Windows.Forms.ComboBox();
+            this.defaultX64ComboBox = new System.Windows.Forms.ComboBox();
             this.defaultx64Label = new System.Windows.Forms.Label();
-            this.defaultCombo = new System.Windows.Forms.ComboBox();
+            this.defaultX86ComboBox = new System.Windows.Forms.ComboBox();
             this.defaultx86Label = new System.Windows.Forms.Label();
             this.deleteButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.listView = new System.Windows.Forms.ListView();
             this.pathColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.capacityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.versionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.capacityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.optionsPage = new System.Windows.Forms.TabPage();
             this.optionsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.okButton = new System.Windows.Forms.Button();
@@ -77,9 +77,9 @@
             // librariesPage
             // 
             this.librariesPage.BackColor = System.Drawing.SystemColors.Control;
-            this.librariesPage.Controls.Add(this.winCECombo);
+            this.librariesPage.Controls.Add(this.defaultX64ComboBox);
             this.librariesPage.Controls.Add(this.defaultx64Label);
-            this.librariesPage.Controls.Add(this.defaultCombo);
+            this.librariesPage.Controls.Add(this.defaultX86ComboBox);
             this.librariesPage.Controls.Add(this.defaultx86Label);
             this.librariesPage.Controls.Add(this.deleteButton);
             this.librariesPage.Controls.Add(this.addButton);
@@ -91,15 +91,16 @@
             this.librariesPage.TabIndex = 0;
             this.librariesPage.Text = "Libraries";
             // 
-            // winCECombo
+            // defaultX64ComboBox
             // 
-            this.winCECombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.defaultX64ComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.winCECombo.FormattingEnabled = true;
-            this.winCECombo.Location = new System.Drawing.Point(113, 218);
-            this.winCECombo.Name = "winCECombo";
-            this.winCECombo.Size = new System.Drawing.Size(292, 21);
-            this.winCECombo.TabIndex = 24;
+            this.defaultX64ComboBox.FormattingEnabled = true;
+            this.defaultX64ComboBox.Location = new System.Drawing.Point(113, 218);
+            this.defaultX64ComboBox.Name = "defaultX64ComboBox";
+            this.defaultX64ComboBox.Size = new System.Drawing.Size(292, 21);
+            this.defaultX64ComboBox.TabIndex = 24;
+            this.defaultX64ComboBox.SelectedIndexChanged += new System.EventHandler(this.DefaultX64Changed);
             // 
             // defaultx64Label
             // 
@@ -111,15 +112,16 @@
             this.defaultx64Label.TabIndex = 23;
             this.defaultx64Label.Text = "Default x64 version:";
             // 
-            // defaultCombo
+            // defaultX86ComboBox
             // 
-            this.defaultCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.defaultX86ComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.defaultCombo.FormattingEnabled = true;
-            this.defaultCombo.Location = new System.Drawing.Point(113, 188);
-            this.defaultCombo.Name = "defaultCombo";
-            this.defaultCombo.Size = new System.Drawing.Size(292, 21);
-            this.defaultCombo.TabIndex = 22;
+            this.defaultX86ComboBox.FormattingEnabled = true;
+            this.defaultX86ComboBox.Location = new System.Drawing.Point(113, 188);
+            this.defaultX86ComboBox.Name = "defaultX86ComboBox";
+            this.defaultX86ComboBox.Size = new System.Drawing.Size(292, 21);
+            this.defaultX86ComboBox.TabIndex = 22;
+            this.defaultX86ComboBox.SelectedIndexChanged += new System.EventHandler(this.DefaultX86Changed);
             // 
             // defaultx86Label
             // 
@@ -176,15 +178,15 @@
             this.pathColumn.Text = "Path";
             this.pathColumn.Width = 269;
             // 
-            // capacityHeader
-            // 
-            this.capacityHeader.Text = "Capacity";
-            this.capacityHeader.Width = 54;
-            // 
             // versionHeader
             // 
             this.versionHeader.Text = "Version";
             this.versionHeader.Width = 69;
+            // 
+            // capacityHeader
+            // 
+            this.capacityHeader.Text = "Capacity";
+            this.capacityHeader.Width = 54;
             // 
             // optionsPage
             // 
@@ -250,9 +252,9 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage librariesPage;
-        private System.Windows.Forms.ComboBox winCECombo;
+        private System.Windows.Forms.ComboBox defaultX64ComboBox;
         private System.Windows.Forms.Label defaultx64Label;
-        private System.Windows.Forms.ComboBox defaultCombo;
+        private System.Windows.Forms.ComboBox defaultX86ComboBox;
         private System.Windows.Forms.Label defaultx86Label;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button addButton;
