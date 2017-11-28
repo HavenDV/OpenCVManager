@@ -55,6 +55,8 @@
       <Button guid="guidVsPackageCmdSet" id="SettingsCommandId" priority="0x0099" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_PROPERTIES" />
         <Icon guid="guidImages" id="bmpPicOpenCV" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>OpenCV Manager Settings</ButtonText>
         </Strings>
@@ -71,7 +73,7 @@
       <Bitmap guid="guidImages" href="Resources\SettingsCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicOpenCV"/>
     </Bitmaps>
   </Commands>
-
+  
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidVsPackage" value="{f3a49ea2-f806-4c5c-b6cc-83c9b3c9c10b}" />

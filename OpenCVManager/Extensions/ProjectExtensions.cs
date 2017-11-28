@@ -16,6 +16,18 @@ namespace OpenCVManager.Extensions
                 throw new Exception(@"Settings not found");
             }
 
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                if (!string.IsNullOrWhiteSpace(settings.Environment))
+                {
+                    settings.Environment = string.Join(Environment.NewLine, 
+                        settings.Environment.
+                        ToLines(StringSplitOptions.RemoveEmptyEntries).
+                        Where(line => !line.StartsWith(name)));
+                }
+                return;
+            }
+
             var newLine = $"{name}={value}";
             if (string.IsNullOrWhiteSpace(settings.Environment))
             {
@@ -42,7 +54,9 @@ namespace OpenCVManager.Extensions
                 settings.Environment = string.Join(Environment.NewLine, lines);
             }
         }
-        
+
+        public static bool IsVcProject(this Project project) => project.Object is VCProject;
+
         public static VCConfiguration GetConfiguration(this Project project, string configurationName = null, string platformName = null)
         {
             if (!(project.Object is VCProject vcProject))

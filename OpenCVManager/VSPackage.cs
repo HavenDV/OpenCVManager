@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using OpenCVManager.Commands;
 
 namespace OpenCVManager
@@ -23,7 +24,8 @@ namespace OpenCVManager
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
+    [InstalledProductRegistration("#110", "#112", "0.9.3", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", 
         "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]

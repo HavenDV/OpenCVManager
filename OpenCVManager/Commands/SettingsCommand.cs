@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
+using OpenCVManager.Extensions;
 using OpenCVManager.Forms;
 using OpenCVManager.Utilities;
 
@@ -35,16 +36,27 @@ namespace OpenCVManager.Commands
         {
             _package = package ?? throw new ArgumentNullException(nameof(package));
 
-            var commandService = ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (commandService == null)
+            if (!(ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService))
             {
                 return;
             }
 
             var menuCommandId = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(MenuItemCallback, menuCommandId);
+            var menuItem = new OleMenuCommand(MenuItemCallback, menuCommandId);
+            menuItem.BeforeQueryStatus += OnBeforeQueryStatus;
             commandService.AddCommand(menuItem);
         }
+
+        private static void OnBeforeQueryStatus(object sender, EventArgs e)
+        {
+            if (!(sender is OleMenuCommand command))
+            {
+                return;
+            }
+
+            command.Visible = SolutionUtilities.GetSelectedProject()?.IsVcProject() ?? false;
+        }
+
 
         /// <summary>
         /// Gets the instance of the command.
