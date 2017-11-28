@@ -101,8 +101,15 @@ namespace OpenCVManager.Core
                 return;
             }
 
-            LibrariesPath = Path.GetDirectoryName(AvailableLibraries.First());
             VersionShort = FindVersion(AvailableLibraries);
+            AvailableLibraries = LibraryUtilities.FindAvailableFiles(path, LibrariesSubFolders, $"*{VersionShort}.lib");
+            if (!AvailableLibraries.Any())
+            {
+                Error = "Libraries are not found";
+                return;
+            }
+
+            LibrariesPath = Path.GetDirectoryName(AvailableLibraries.First());
             Version = ToFullVersion(VersionShort);
             AvailableModules = AvailableLibraries.Select(GetName).ToList();
             if (!AvailableModules.Any())
@@ -111,7 +118,7 @@ namespace OpenCVManager.Core
                 return;
             }
 
-            AvailableDlls = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, "*.dll");
+            AvailableDlls = LibraryUtilities.FindAvailableFiles(path, DllSubFolders, $"*{VersionShort}.dll");
             if (!AvailableDlls.Any())
             {
                 Error = "Dlls are not found";
@@ -150,7 +157,8 @@ namespace OpenCVManager.Core
             libraries = libraries ?? throw new ArgumentNullException(nameof(libraries));
             libraries = libraries.Any() ? libraries : throw new ArgumentException(@"Array is empty", nameof(libraries));
 
-            return GetVersion(libraries.FirstOrDefault());
+            return GetVersion(libraries.
+                FirstOrDefault(library => Path.GetFileName(library)?.StartsWith("opencv_core") ?? false));
         }
 
         public static bool FindIs64Bit(ICollection<string> dlls)
