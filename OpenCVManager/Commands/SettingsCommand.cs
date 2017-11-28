@@ -83,7 +83,7 @@ namespace OpenCVManager.Commands
             // Show a message box to prove we were here
             //VsShellUtilities.ShowMessageBox(ServiceProvider, message, title,
             //   OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-
+            
             using (var form = new SettingsForm(SolutionUtilities.GetSelectedProject()))
             {
                 form.ShowDialog();

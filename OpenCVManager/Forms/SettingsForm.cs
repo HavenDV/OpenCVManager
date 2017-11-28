@@ -26,6 +26,10 @@ namespace OpenCVManager.Forms
         public List<string> ProjectModules { get; private set; }
         public bool IsInitialized { get; private set; }
 
+        private static string UserVersionGlobalVariableName { get; } = "OpenCVManager_UsedVersion";
+        private static string LibrariesPathEnvironmentVariable { get; } = "$(OpenCVManager_LibrariesPath)";
+        private static string HeadersPathEnvironmentVariable { get; } = "$(OpenCVManager_HeadersPath)";
+
         #endregion
 
         #region Constructors
@@ -43,8 +47,6 @@ namespace OpenCVManager.Forms
 
         #region Private methods
 
-        private const string UserVersionGlobalVariableName = "OpenCVManager_UsedVersion";
-        
         private void UpdateAvailableVersions()
         {
             usedVersionComboBox.Items.Clear();
@@ -84,14 +86,14 @@ namespace OpenCVManager.Forms
 
         private void OnLoad(object sender, EventArgs e)
         {
-            ProjectLibraries = Project.GetProjectLibraries("opencv_").ToList();
-            ProjectModules = ProjectLibraries.Select(Library.GetName).ToList();
-
             //TODO: $(Any) $(Any3.3.0) $(Any3.3.0+)
             UsedVersion = Project.TryGetGlobalVariable(UserVersionGlobalVariableName, out string result)
                 ? result : string.Empty;
             UsedLibrary = new Library(UsedVersion);
             PreviousLibrary = UsedLibrary;
+
+            ProjectLibraries = Project.GetProjectLibraries("opencv_", UsedLibrary.VersionShort + ".lib").ToList();
+            ProjectModules = ProjectLibraries.Select(Library.GetName).ToList();
 
             UpdateAvailableVersions();
             UpdateModules();
@@ -103,7 +105,7 @@ namespace OpenCVManager.Forms
             UpdateModules();
         }
 
-        private void OnKeyPress(object sender, KeyPressEventArgs e) => 
+        private void OnKeyPress(object sender, KeyPressEventArgs e) =>
             StandardEventHandlers.OnKeyPressEscapeCancel(sender, e);
 
         private string[] GetCheckedLibraries() => modulesListBox.CheckedItems.
@@ -116,14 +118,16 @@ namespace OpenCVManager.Forms
             // TODO: check used exists in available
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
 
-            Project.DeleteProjectDependencies("Release", "x64", ProjectLibraries.ToArray());
-            Project.AddProjectDependencies("Release", "x64", GetCheckedLibraries());
+            Project.DeleteProjectDependencies(ProjectLibraries.ToArray());
+            Project.AddProjectDependencies(GetCheckedLibraries());
 
-            Project.DeleteProjectLibraryDirectories("Release", "x64", PreviousLibrary.LibrariesPath);
-            Project.AddProjectLibraryDirectories("Release", "x64", UsedLibrary.LibrariesPath);
+            Project.SetDebugEnvironmentVariable(LibrariesPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.LibrariesPath);
+            Project.DeleteProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
+            Project.AddProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
 
-            Project.DeleteProjectHeadersDirectories("Release", "x64", PreviousLibrary.HeadersPath);
-            Project.AddProjectHeadersDirectories("Release", "x64", UsedLibrary.HeadersPath);
+            Project.SetDebugEnvironmentVariable(HeadersPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.HeadersPath);
+            Project.DeleteProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
+            Project.AddProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
 
             Close();
         }
