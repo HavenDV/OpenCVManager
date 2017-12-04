@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
@@ -92,7 +93,18 @@ namespace OpenCVManager.Forms
             UsedLibrary = new Library(UsedVersion);
             PreviousLibrary = UsedLibrary;
 
-            ProjectLibraries = Project.GetProjectLibraries("opencv_", UsedLibrary.VersionShort + ".lib").ToList();
+            ProjectLibraries = Project.GetProjectLibraries("opencv_").ToList();
+
+            // If project contains opencv_coreXXX.lib select all XXX version libraries only
+            var projectCoreLibraryName = ProjectLibraries.
+                Select(Path.GetFileNameWithoutExtension).
+                FirstOrDefault(name => name?.StartsWith("opencv_core") ?? false);
+            if (projectCoreLibraryName != null)
+            {
+                var projectCoreLibraryVersion = projectCoreLibraryName.Replace("opencv_core", "");
+                ProjectLibraries = Project.GetProjectLibraries("opencv_", projectCoreLibraryVersion + ".lib").ToList();
+            }
+
             ProjectModules = ProjectLibraries.Select(Library.GetName).ToList();
 
             UpdateAvailableVersions();
@@ -113,21 +125,39 @@ namespace OpenCVManager.Forms
             Select(i => Library.GetFileName(i.ToString(), UsedLibrary.VersionShort, ".lib")).
             ToArray();
 
-        private void Save(object sender, EventArgs e)
+        private void Save()
         {
+            Project.DeleteProjectDependencies(ProjectLibraries.ToArray());
+            Project.DeleteProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
+            Project.DeleteProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
+            Project.DeleteProjectLibraryDirectories(new[] { PreviousLibrary.LibrariesPath });
+            Project.DeleteProjectHeadersDirectories(new[] { PreviousLibrary.HeadersPath });
+            Project.SetDebugEnvironmentVariable(LibrariesPathEnvironmentVariable.Trim('(', ')', '$'), null);
+            Project.SetDebugEnvironmentVariable(HeadersPathEnvironmentVariable.Trim('(', ')', '$'), null);
+
+            if (!UsedLibrary.IsAvailable)
+            {
+                Project.WrireGlobalVariable(UserVersionGlobalVariableName, null);
+                return;
+            }
+
             // TODO: check used exists in available
             Project.WrireGlobalVariable(UserVersionGlobalVariableName, UsedVersion);
 
-            Project.DeleteProjectDependencies(ProjectLibraries.ToArray());
             Project.AddProjectDependencies(GetCheckedLibraries());
+            Project.AddProjectLibraryDirectories(new []{ UsedLibrary.LibrariesPath });
+            Project.AddProjectHeadersDirectories(new[] { UsedLibrary.HeadersPath });
 
-            Project.SetDebugEnvironmentVariable(LibrariesPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.LibrariesPath);
-            Project.DeleteProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
-            Project.AddProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
+            //Project.SetDebugEnvironmentVariable(LibrariesPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.LibrariesPath);
+            //Project.AddProjectLibraryDirectories(new[] { LibrariesPathEnvironmentVariable });
 
-            Project.SetDebugEnvironmentVariable(HeadersPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.HeadersPath);
-            Project.DeleteProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
-            Project.AddProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
+            //Project.SetDebugEnvironmentVariable(HeadersPathEnvironmentVariable.Trim('(', ')', '$'), UsedLibrary.HeadersPath);
+            //Project.AddProjectHeadersDirectories(new[] { HeadersPathEnvironmentVariable });
+        }
+
+        private void Save(object sender, EventArgs e)
+        {
+            Save();
 
             Close();
         }
