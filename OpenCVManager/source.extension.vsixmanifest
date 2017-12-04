@@ -6,6 +6,7 @@
         <Description xml:space="preserve">OpenCV libraries manager for Visual Studio 2017</Description>
         <License>LICENSE.txt</License>
         <Icon>Resources\icon.ico</Icon>
+        <PreviewImage>Resources\preview.png</PreviewImage>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
